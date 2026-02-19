@@ -3,3 +3,4 @@ config.php
 nbproject/private/config.properties
 /nbproject
 .env.example
+config.php
