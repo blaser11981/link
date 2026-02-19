@@ -1,0 +1,5 @@
+.env
+config.php
+nbproject/private/config.properties
+/nbproject
+.env.example
