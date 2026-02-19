@@ -31,7 +31,7 @@ if (file_exists($envFile) && is_readable($envFile)) {
 // ────────────────────────────────────────────────
 
 define('DB_HOST',     getenv('DB_HOST')     ?: 'localhost');
-define('DB_NAME',     getenv('DB_NAME')     ?: 'variuxlink');
+define('DB_NAME',     getenv('DB_NAME')     ?: 'link');
 define('DB_USER',     getenv('DB_USER')     ?: 'root');
 define('DB_PASS',     getenv('DB_PASS')     ?: '');
 define('NOTION_TOKEN', getenv('NOTION_TOKEN') ?: '');
@@ -39,10 +39,10 @@ define('NOTION_TOKEN', getenv('NOTION_TOKEN') ?: '');
 define('APP_URL',     rtrim(getenv('APP_URL') ?: 'http://localhost', '/'));
 
 // Notion database IDs (from your original document – cleaned)
-define('NOTION_CLIENTS_DB_ID',      '2c4db8f8d6e9802da765000b733c87ec');
-define('NOTION_PROJECTS_DB_ID',     '2c3db8f8d6e981359cc5000b8e52b323');
-define('NOTION_TASKS_DB_ID',        '2c3db8f8d6e98127a7f0000b66bc8a8e');
-define('NOTION_TIME_ENTRIES_DB_ID', '2c4db8f8d6e980fa89fa000b548b216c');
+define('NOTION_CLIENTS_DB_ID',      '2c4db8f834343434343400b733c87ec');
+define('NOTION_PROJECTS_DB_ID',     '2c3db8f83434343434b8e52b323');
+define('NOTION_TASKS_DB_ID',        '2c3db8434346bc8a8e');
+define('NOTION_TIME_ENTRIES_DB_ID', '2c4db344346c');
 // add others when you implement them (CRM, Parties, Sprints, Workstreams, ...)
 
 if (empty(NOTION_TOKEN)) {
