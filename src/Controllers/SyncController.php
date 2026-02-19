@@ -45,7 +45,7 @@ class SyncController
 
     private function syncClients(): void
     {
-        $pages = $this->notion->queryDatabase(NOTION_CLIENTS_DB);
+        $pages = $this->notion->queryDatabase(\NOTION_CLIENTS_DB);
         $db = Database::getInstance();
 
         foreach ($pages as $page) {
