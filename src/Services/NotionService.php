@@ -49,22 +49,21 @@ class NotionService
     public function extractValue(array $property): mixed
     {
         $type = $property['type'] ?? 'unknown';
+
         return match ($type) {
-            'title'         => $property['title'][0]['plain_text'] ?? '',
-            'rich_text'     => $property['rich_text'][0]['plain_text'] ?? '',
-            'status'        => $property['status']['name'] ?? null,
-            'people'        => implode(', ', array_map(fn($p) => $p['name'] ?? '', $property['people'] ?? [])),
-            'url'           => $property['url'] ?? null,
-            'number'        => $property['number'] ?? null,
-            'relation'      => array_column($property['relation'] ?? [], 'id'),
-            'multi_select'  => array_column($property['multi_select'] ?? [], 'name'),
-            'select'        => $property['select']['name'] ?? null,
-            'date'          => $property['date']['start'] ?? null, // todo: handle end & time
-            'checkbox'      => $property['checkbox'] ?? false,
-            'files'         => array_column($property['files'] ?? [], 'url'),
-            'created_time'  => $property['created_time'] ?? null,
-            'last_edited_time' => $property['last_edited_time'] ?? null,
-            default         => null,
+            'title'     => $property['title'][0]['plain_text'] ?? '',
+            'rich_text' => $property['rich_text'][0]['plain_text'] ?? '',
+            'status'    => $property['status']['name'] ?? null,
+            'people'    => implode(', ', array_map(fn($p) => $p['name'] ?? '', $property['people'] ?? [])),
+            'url'       => $property['url'] ?? null,
+            'number'    => $property['number'] ?? null,
+            'relation'  => array_column($property['relation'] ?? [], 'id'),
+            'multi_select' => array_column($property['multi_select'] ?? [], 'name'),
+            'select'    => $property['select']['name'] ?? null,
+            'date'      => $property['date']['start'] ?? null,
+            'checkbox'  => $property['checkbox'] ?? false,
+            'files'     => array_column($property['files'] ?? [], 'url'),
+            default     => null,
         };
     }
 }

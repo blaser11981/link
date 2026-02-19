@@ -30,17 +30,17 @@ class Project
         ];
 
         $db = Database::getInstance();
-        $stmt = $db->prepare('SELECT id FROM projects WHERE notion_id = ?');
+        $stmt = $db->prepare('SELECT id FROM notion_projects WHERE notion_id = ?');
         $stmt->execute([$notionId]);
         $id = $stmt->fetchColumn();
 
         if ($id) {
-            $updateQuery = 'UPDATE projects SET name = ?, status_id = ?, responsible = ?, pm = ?, type = ?, website = ?, description = ?, rate = ?, completion_date = ?, duration_start = ?, duration_end = ?, last_edited_time = ? WHERE notion_id = ?';
+            $updateQuery = 'UPDATE notion_projects SET name = ?, status_id = ?, responsible = ?, pm = ?, type = ?, website = ?, description = ?, rate = ?, completion_date = ?, duration_start = ?, duration_end = ?, last_edited_time = ? WHERE notion_id = ?';
             $updateData = array_values($data);
             $updateData[] = $notionId; // append for WHERE
             $db->prepare($updateQuery)->execute($updateData);
         } else {
-            $insertQuery = 'INSERT INTO projects (notion_id, name, status_id, responsible, pm, type, website, description, rate, completion_date, duration_start, duration_end, last_edited_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            $insertQuery = 'INSERT INTO notion_projects (notion_id, name, status_id, responsible, pm, type, website, description, rate, completion_date, duration_start, duration_end, last_edited_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
             $db->prepare($insertQuery)->execute(array_values($data));
             $id = $db->lastInsertId();
         }
@@ -57,11 +57,11 @@ class Project
 
         // Example: Multi clients
         $clientNotionIds = $notion->extractValue($props['Clients']) ?? [];
-        $db->prepare('DELETE FROM project_clients WHERE project_id = ?')->execute([$id]);
+        $db->prepare('DELETE FROM notion_project_clients WHERE project_id = ?')->execute([$id]);
         foreach ($clientNotionIds as $clientNotion) {
-            $clientId = self::getIdByNotion('clients', $clientNotion);
+            $clientId = self::getIdByNotion('notion_clients', $clientNotion);
             if ($clientId) {
-                $db->prepare('INSERT IGNORE INTO project_clients (project_id, client_id) VALUES (?, ?)')->execute([$id, $clientId]);
+                $db->prepare('INSERT IGNORE INTO notion_project_clients (project_id, client_id) VALUES (?, ?)')->execute([$id, $clientId]);
             }
         }
 
@@ -72,11 +72,11 @@ class Project
     {
         if (empty($value)) return null;
         $db = Database::getInstance();
-        $stmt = $db->prepare('SELECT id FROM options WHERE category = ? AND value = ?');
+        $stmt = $db->prepare('SELECT id FROM notion_options WHERE category = ? AND value = ?');
         $stmt->execute([$category, $value]);
         $id = $stmt->fetchColumn();
         if (!$id) {
-            $db->prepare('INSERT INTO options (category, value) VALUES (?, ?)')->execute([$category, $value]);
+            $db->prepare('INSERT INTO notion_options (category, value) VALUES (?, ?)')->execute([$category, $value]);
             $id = $db->lastInsertId();
         }
         return (int) $id;

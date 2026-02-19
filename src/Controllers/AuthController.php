@@ -8,7 +8,7 @@ namespace VariuxLink\Controllers;
 use VariuxLink\Database;
 use VariuxLink\Models\User;  // assuming you have a User model
 
-class AuthController
+class AuthController extends BaseController
 {
     public function showLoginForm(): void
     {

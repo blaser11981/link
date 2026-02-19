@@ -7,34 +7,30 @@ use VariuxLink\Database;
 
 class Client
 {
-    public static function upsertFromNotion(array $page): int
+    public static function upsertFromNotion(array $data): void
     {
-        $props = $page['properties'];
-        $notionId = str_replace('-', '', $page['id']);
-
         $db = Database::getInstance();
 
-        $stmt = $db->prepare('SELECT id FROM clients WHERE notion_id = ?');
-        $stmt->execute([$notionId]);
-        $id = $stmt->fetchColumn();
+        $stmt = $db->prepare('SELECT id FROM notion_clients WHERE notion_id = ?');
+        $stmt->execute([$data['notion_id']]);
+        $existingId = $stmt->fetchColumn();
 
-        $data = [
-            str_replace('-', '', $page['id']),
-            $props['Name']['title'][0]['plain_text'] ?? '',
-            $props['Code']['rich_text'][0]['plain_text'] ?? null,
-            // status → map to options table id (implement helper)
-            // responsible → person name
-            // etc.
-        ];
-
-        if ($id) {
-            // UPDATE
-        } else {
-            $stmt = $db->prepare('INSERT INTO clients (notion_id, name, code /* ... */) VALUES (?, ?, ? /* ... */)');
+        if ($existingId) {
+            $stmt = $db->prepare('
+                UPDATE notion_clients SET 
+                    name = :name, code = :code, status_id = :status_id, 
+                    responsible = :responsible, url = :url, nps = :nps,
+                    updated_at = NOW()
+                WHERE notion_id = :notion_id
+            ');
             $stmt->execute($data);
-            $id = $db->lastInsertId();
+        } else {
+            $stmt = $db->prepare('
+                INSERT INTO notion_clients 
+                (notion_id, name, code, status_id, responsible, url, nps, created_at)
+                VALUES (:notion_id, :name, :code, :status_id, :responsible, :url, :nps, NOW())
+            ');
+            $stmt->execute($data);
         }
-
-        return (int) $id;
     }
 }

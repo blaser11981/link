@@ -19,7 +19,7 @@ class SyncController
     {
         $this->notion = new NotionService();
     }
-
+    
     public function dashboard(): void
     {
         $db = Database::getInstance();
@@ -32,9 +32,9 @@ class SyncController
     public function syncNotion(): void
     {
         try {
-            $this->syncDatabase(NOTION_CLIENTS_DB, Client::class);
-            $this->syncDatabase(NOTION_PROJECTS_DB, Project::class);
-            $this->syncDatabase(NOTION_TASKS_DB, Task::class);
+            $this->syncDatabase(NOTION_CLIENTS_DB_ID, Client::class);
+            $this->syncDatabase(NOTION_PROJECTS_DB_ID, Project::class);
+            $this->syncDatabase(NOTION_TASKS_DB_ID, Task::class);
             // Add syncTimeEntries, syncParties, etc. similarly
 
             $_SESSION['message'] = 'Sync completed';

@@ -6,7 +6,7 @@ namespace VariuxLink\Controllers;
 
 use VariuxLink\Database;
 
-class TimeEntryController
+class TimeEntryController extends BaseController
 {
     public function create(): void
     {
@@ -18,7 +18,7 @@ class TimeEntryController
                 // etc.
             ];
             $db = Database::getInstance();
-            $db->prepare('INSERT INTO time_entries (name, status_id, staff /* ... */) VALUES (?, ?, ? /* ... */)')->execute(array_values($data));
+            $db->prepare('INSERT INTO notion_time_entries (name, status_id, staff /* ... */) VALUES (?, ?, ? /* ... */)')->execute(array_values($data));
             $_SESSION['message'] = 'Time entry created';
             header('Location: /dashboard');
             exit;
